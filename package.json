@@ -12,9 +12,9 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/LeetCode-OpenSource/vscode-leetcode"
+        "url": "https://github.com/KuiyuanFu/VSCodeExtensionPythonLeetcode"
     },
-    "homepage": "https://github.com/LeetCode-OpenSource/vscode-leetcode/blob/master/README.md",
+    "homepage": "https://github.com/KuiyuanFu/VSCodeExtensionPythonLeetcode/README.md",
     "categories": [
         "Other",
         "Snippets"

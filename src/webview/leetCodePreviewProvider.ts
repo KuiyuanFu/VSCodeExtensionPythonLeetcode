@@ -44,7 +44,7 @@ class LeetCodePreviewProvider extends LeetCodeWebview {
             };
         }
     }
-
+    // FuTodo 获得预览内容，就是有 Code Now 按钮的那一页
     protected getWebviewContent(): string {
         const button: { element: string, script: string, style: string } = {
             element: `<button id="solve">Code Now</button>`,
@@ -130,11 +130,12 @@ class LeetCodePreviewProvider extends LeetCodeWebview {
 
     protected onDidDisposeWebview(): void {
         super.onDidDisposeWebview();
-        delete this.node;
-        delete this.description;
+        // delete this.node;
+        // delete this.description;
         this.sideMode = false;
     }
 
+    // FuTodo Code Now 回调位置
     protected async onDidReceiveMessage(message: IWebViewMessage): Promise<void> {
         switch (message.command) {
             case "ShowProblem": {

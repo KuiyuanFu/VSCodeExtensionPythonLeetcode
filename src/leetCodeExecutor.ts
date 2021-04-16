@@ -110,6 +110,7 @@ class LeetCodeExecutor implements Disposable {
         return solution;
     }
 
+    // FuTodo 获得表述执行位置
     public async getDescription(problemNodeId: string): Promise<string> {
         return await this.executeCommandWithProgressEx("Fetching problem description...", this.nodeExecutable, [await this.getLeetCodeBinaryPath(), "show", problemNodeId, "-x"]);
     }

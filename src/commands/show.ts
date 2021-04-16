@@ -21,7 +21,9 @@ import { leetCodePreviewProvider } from "../webview/leetCodePreviewProvider";
 import { leetCodeSolutionProvider } from "../webview/leetCodeSolutionProvider";
 import * as list from "./list";
 
-export async function previewProblem(input: IProblem | vscode.Uri, isSideMode: boolean = false): Promise<void> {
+
+// FuTodo 获得预览调用位置
+export async function previewProblem(input: IProblem | vscode.Uri, showProblem: boolean = true, isSideMode: boolean = true): Promise<void> {
     let node: IProblem;
     if (input instanceof vscode.Uri) {
         const activeFilePath: string = input.fsPath;
@@ -44,6 +46,13 @@ export async function previewProblem(input: IProblem | vscode.Uri, isSideMode: b
 
     const descString: string = await leetCodeExecutor.getDescription(node.id);
     leetCodePreviewProvider.show(descString, node, isSideMode);
+
+
+    // FuTodo 修改为显示预览后 直接生成文件
+    if (showProblem) {
+        await vscode.commands.executeCommand("leetcode.showProblem", node);
+    }
+
 }
 
 export async function pickOne(): Promise<void> {
@@ -131,6 +140,7 @@ async function fetchProblemLanguage(): Promise<string | undefined> {
     return language;
 }
 
+// FuTodo 生成文件及编辑器位置
 async function showProblemInternal(node: IProblem): Promise<void> {
     try {
         const language: string | undefined = await fetchProblemLanguage();
@@ -166,6 +176,7 @@ async function showProblemInternal(node: IProblem): Promise<void> {
 
         finalPath = wsl.useWsl() ? await wsl.toWinPath(finalPath) : finalPath;
 
+
         const descriptionConfig: IDescriptionConfiguration = settingUtils.getDescriptionConfiguration();
         await leetCodeExecutor.showProblem(node, language, finalPath, descriptionConfig.showInComment);
         const promises: any[] = [
@@ -177,6 +188,7 @@ async function showProblemInternal(node: IProblem): Promise<void> {
                 (): Promise<any> => openSettingsEditor("leetcode.showDescription"),
             ),
         ];
+        // FuTodo 生成文件时，调用获得预览的函数
         if (descriptionConfig.showInWebview) {
             promises.push(showDescriptionView(node));
         }
@@ -188,7 +200,10 @@ async function showProblemInternal(node: IProblem): Promise<void> {
 }
 
 async function showDescriptionView(node: IProblem): Promise<void> {
-    return previewProblem(node, vscode.workspace.getConfiguration("leetcode").get<boolean>("enableSideMode", true));
+    if (false) {
+        return previewProblem(node, false, vscode.workspace.getConfiguration("leetcode").get<boolean>("enableSideMode", true));
+    }
+
 }
 async function parseProblemsToPicks(p: Promise<IProblem[]>): Promise<Array<IQuickItemEx<IProblem>>> {
     return new Promise(async (resolve: (res: Array<IQuickItemEx<IProblem>>) => void): Promise<void> => {
