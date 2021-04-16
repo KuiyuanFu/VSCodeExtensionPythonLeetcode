@@ -23,7 +23,7 @@ import * as list from "./list";
 
 
 // FuTodo 获得预览调用位置
-export async function previewProblem(input: IProblem | vscode.Uri, showProblem: boolean = true, isSideMode: boolean = true): Promise<void> {
+export async function previewProblem(input: IProblem | vscode.Uri, showProblem: boolean = true, isSideMode: boolean = false): Promise<void> {
     let node: IProblem;
     if (input instanceof vscode.Uri) {
         const activeFilePath: string = input.fsPath;
