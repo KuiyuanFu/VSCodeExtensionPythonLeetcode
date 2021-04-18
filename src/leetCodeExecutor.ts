@@ -135,6 +135,7 @@ class LeetCodeExecutor implements Disposable {
             return
         }
         block.push('# @lc tags=' + problemNode.tags.join(';'),)
+        block.push('',)
     }
     private generateImports(block: string[],) {
         if (block.length != 0) {
@@ -150,6 +151,7 @@ class LeetCodeExecutor implements Disposable {
                 block.push(s)
             }
         )
+        block.push('',)
     }
     private generateIdea(block: string[],) {
         if (block.length != 0) {
@@ -167,6 +169,7 @@ class LeetCodeExecutor implements Disposable {
                 block.push(s)
             }
         )
+        block.push('',)
     }
     private generateGroup(block: string[],) {
         if (block.length != 0) {
@@ -174,12 +177,14 @@ class LeetCodeExecutor implements Disposable {
         }
 
         block.push('# @lc group=')
+        block.push('',)
     }
     private generateRank(block: string[],) {
         if (block.length != 0) {
             return
         }
         block.push('# @lc rank=')
+        block.push('',)
 
     }
 
@@ -194,8 +199,8 @@ class LeetCodeExecutor implements Disposable {
             var tail = block.pop()
             block.push('        pass')
             block.push(tail as string)
-
         }
+        block.push('',)
     }
     private generateMain(block: string[], app: string[], code: string[]) {
         if (block.length != 0) {
@@ -304,7 +309,8 @@ class LeetCodeExecutor implements Disposable {
 
             }).join(' ');
             block.push("    print('Example " + (exampleIndex + 1) + ":')",)
-            block.push("    print(Solution()." + funcName + "(" + para + "))",)
+            block.push("    print('Input : " + example[1] + "')",)
+            block.push("    print('Output : '+str(Solution()." + funcName + "(" + para + ")))",)
             block.push("    print('Exception :')",)
             block.push("    print('" + example[1] + "')",)
             block.push("    print('')",)
@@ -314,6 +320,7 @@ class LeetCodeExecutor implements Disposable {
 
         block.push('    pass',)
         block.push('# @lc main=end',)
+        block.push('',)
     }
     private codeTemplateSplit(codeTemplate: string,): string[][] {
         var blocks: string[][] = [[], [], [], [], [], [], [], []]
