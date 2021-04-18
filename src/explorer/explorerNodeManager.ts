@@ -104,6 +104,13 @@ class ExplorerNodeManager implements Disposable {
     }
 
     public getNodeById(id: string): LeetCodeNode | undefined {
+
+        return this.explorerNodeMap.get(id);
+    }
+    public async getNodeByIdRefresh(id: string): Promise<LeetCodeNode | undefined> {
+        if (this.explorerNodeMap.size == 0) {
+            await this.refreshCache()
+        }
         return this.explorerNodeMap.get(id);
     }
 

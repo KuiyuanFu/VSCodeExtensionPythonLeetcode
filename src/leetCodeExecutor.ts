@@ -13,7 +13,7 @@ import { executeCommand, executeCommandWithProgress } from "./utils/cpUtils";
 import { DialogOptions, openUrl } from "./utils/uiUtils";
 import * as wsl from "./utils/wslUtils";
 import { toWslPath, useWsl } from "./utils/wslUtils";
-
+import { explorerNodeManager } from "./explorer/explorerNodeManager";
 class LeetCodeExecutor implements Disposable {
     private leetCodeRootPath: string;
     private nodeExecutable: string;
@@ -103,14 +103,40 @@ class LeetCodeExecutor implements Disposable {
         if (!await fse.pathExists(filePath)) {
             await fse.createFile(filePath);
             const codeTemplate: string = await this.executeCommandWithProgressEx("Fetching problem data...", this.nodeExecutable, [await this.getLeetCodeBinaryPath(), "show", problemNode.id, templateType, "-l", language]);
-
+            // FuTodo diy模板的函数
             const codeTemplateR: string = await this.diyTemplate(problemNode, language, codeTemplate);
             await fse.writeFile(filePath, codeTemplateR);
         }
     }
+    // FuTodo 批量更改已存在的文件逻辑
+    public async diyExistFiles(language: string, dirPath: string): Promise<void> {
+        if (language != 'python3') {
+            return
+        }
+        var fileNames = fse.readdirSync(dirPath)
+
+        for (var fileName of fileNames) {
+            var mathResult = fileName.match(/(^\d+)\..*?.py$/)
+            if (mathResult == null || mathResult.length != 2) {
+                continue
+            }
+            var idString = mathResult[1]
+            var problemNode = await explorerNodeManager.getNodeByIdRefresh(idString)
+            if (!problemNode) {
+                continue
+            }
+            var filePath = path.join(dirPath, fileName)
+            filePath = wsl.useWsl() ? await wsl.toWinPath(filePath) : filePath;
+            var codeTemplate = (await fse.readFile(filePath)).toString()
+            const codeTemplateR: string = await this.diyTemplate(problemNode as IProblem, language, codeTemplate);
+            await fse.writeFile(filePath, codeTemplateR);
+
+        }
+    }
+
     private async diyTemplate(problemNode: IProblem, language: string, codeTemplate: string): Promise<string> {
 
-        if (language != 'python3') {
+        if (language != 'python3' || problemNode == null) {
             return codeTemplate;
         }
         var blocks = this.codeTemplateSplit(codeTemplate)
@@ -309,11 +335,14 @@ class LeetCodeExecutor implements Disposable {
 
             }).join(' ');
             block.push("    print('Example " + (exampleIndex + 1) + ":')",)
-            block.push("    print('Input : " + example[0] + "')",)
-            block.push("    print('Output : '+str(Solution()." + funcName + "(" + para + ")))",)
+            block.push("    print('Input : ')",)
+            block.push("    print('" + example[0] + "')",)
+            block.push("    print('Output :')",)
+            block.push("    print(str(Solution()." + funcName + "(" + para + ")))",)
             block.push("    print('Exception :')",)
             block.push("    print('" + example[1] + "')",)
-            block.push("    print('')",)
+            block.push("    print()",)
+            block.push("    ",)
         });
 
 

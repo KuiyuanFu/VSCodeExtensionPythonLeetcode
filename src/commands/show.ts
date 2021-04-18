@@ -67,6 +67,10 @@ export async function showProblem(node?: LeetCodeNode): Promise<void> {
     }
     await showProblemInternal(node);
 }
+// FuTodo 接口
+export async function diyExistFiles(): Promise<void> {
+    await diyExistFilesInternal();
+}
 
 export async function searchProblem(): Promise<void> {
     if (!leetCodeManager.getUser()) {
@@ -200,6 +204,31 @@ async function showProblemInternal(node: IProblem): Promise<void> {
         await promptForOpenOutputChannel(`${error} Please open the output channel for details.`, DialogType.error);
     }
 }
+// FuTodo 修改已有文件
+async function diyExistFilesInternal(): Promise<void> {
+    try {
+        const language: string | undefined = await fetchProblemLanguage();
+        if (!language) {
+            return;
+        }
+
+        const leetCodeConfig: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("leetcode");
+        const workspaceFolder: string = await selectWorkspaceFolder();
+        if (!workspaceFolder) {
+            return;
+        }
+
+        const fileFolder: string = leetCodeConfig
+            .get<string>(`filePath.${language}.folder`, leetCodeConfig.get<string>(`filePath.default.folder`, ""))
+            .trim();
+
+        let dirPath: string = path.join(workspaceFolder, fileFolder,);
+        await leetCodeExecutor.diyExistFiles(language, dirPath)
+
+    } catch (error) {
+        await promptForOpenOutputChannel(`${error} Please open the output channel for details.`, DialogType.error);
+    }
+}
 
 async function showDescriptionView(node: IProblem): Promise<void> {
     if (false) {
@@ -207,6 +236,7 @@ async function showDescriptionView(node: IProblem): Promise<void> {
     }
 
 }
+
 async function parseProblemsToPicks(p: Promise<IProblem[]>): Promise<Array<IQuickItemEx<IProblem>>> {
     return new Promise(async (resolve: (res: Array<IQuickItemEx<IProblem>>) => void): Promise<void> => {
         const picks: Array<IQuickItemEx<IProblem>> = (await p).map((problem: IProblem) => Object.assign({}, {
