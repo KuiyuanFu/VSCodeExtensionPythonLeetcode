@@ -166,6 +166,7 @@ async function showProblemInternal(node: IProblem): Promise<void> {
 
         let finalPath: string = path.join(workspaceFolder, fileFolder, fileName);
 
+
         if (finalPath) {
             finalPath = await resolveRelativePath(finalPath, node, language);
             if (!finalPath) {
@@ -178,6 +179,7 @@ async function showProblemInternal(node: IProblem): Promise<void> {
 
 
         const descriptionConfig: IDescriptionConfiguration = settingUtils.getDescriptionConfiguration();
+        // FuTodo 文件内容调用
         await leetCodeExecutor.showProblem(node, language, finalPath, descriptionConfig.showInComment);
         const promises: any[] = [
             vscode.window.showTextDocument(vscode.Uri.file(finalPath), { preview: false, viewColumn: vscode.ViewColumn.One }),

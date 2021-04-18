@@ -94,23 +94,280 @@ class LeetCodeExecutor implements Disposable {
             [await this.getLeetCodeBinaryPath(), "list", "-q", "L"],
         );
     }
-
+    // FuTodo 文件内容函数
     public async showProblem(problemNode: IProblem, language: string, filePath: string, showDescriptionInComment: boolean = false): Promise<void> {
+        showDescriptionInComment = true;
         const templateType: string = showDescriptionInComment ? "-cx" : "-c";
+
 
         if (!await fse.pathExists(filePath)) {
             await fse.createFile(filePath);
             const codeTemplate: string = await this.executeCommandWithProgressEx("Fetching problem data...", this.nodeExecutable, [await this.getLeetCodeBinaryPath(), "show", problemNode.id, templateType, "-l", language]);
-            await fse.writeFile(filePath, codeTemplate);
+
+            const codeTemplateR: string = await this.diyTemplate(problemNode, language, codeTemplate);
+            await fse.writeFile(filePath, codeTemplateR);
         }
     }
+    private async diyTemplate(problemNode: IProblem, language: string, codeTemplate: string): Promise<string> {
 
+        if (language != 'python3') {
+            return codeTemplate;
+        }
+        var blocks = this.codeTemplateSplit(codeTemplate)
+        var [app, tags, imports, idea, group, rank, code, main,] = blocks
+
+        this.generateTags(tags, problemNode)
+        this.generateImports(imports)
+        this.generateIdea(idea)
+        this.generateGroup(group)
+        this.generateRank(rank)
+        this.generateCode(code)
+        this.generateMain(main, app, code)
+
+        return blocks.map(
+            (l) => {
+                return l.join("\r\n")
+            }
+        ).join("\r\n");
+    }
+    private generateTags(block: string[], problemNode: IProblem,) {
+        if (block.length != 0) {
+            return
+        }
+        block.push('# @lc tags=' + problemNode.tags.join(';'),)
+    }
+    private generateImports(block: string[],) {
+        if (block.length != 0) {
+            return
+        }
+        var t = [
+            '# @lc imports=start',
+            'from imports import *',
+            '# @lc imports=end',
+        ]
+        t.forEach(
+            (s) => {
+                block.push(s)
+            }
+        )
+    }
+    private generateIdea(block: string[],) {
+        if (block.length != 0) {
+            return
+        }
+        var t = [
+            '# @lc idea=start',
+            '# ',
+            '# ',
+            '# ',
+            '# @lc idea=end',
+        ]
+        t.forEach(
+            (s) => {
+                block.push(s)
+            }
+        )
+    }
+    private generateGroup(block: string[],) {
+        if (block.length != 0) {
+            return
+        }
+
+        block.push('# @lc group=')
+    }
+    private generateRank(block: string[],) {
+        if (block.length != 0) {
+            return
+        }
+        block.push('# @lc rank=')
+
+    }
+
+    private generateCode(block: string[],) {
+        var flag = false
+        block.forEach((s) => {
+            if (s.match(/        pass/)) {
+                flag = true;
+            }
+        })
+        if (flag == false) {
+            var tail = block.pop()
+            block.push('        pass')
+            block.push(tail as string)
+
+        }
+    }
+    private generateMain(block: string[], app: string[], code: string[]) {
+        if (block.length != 0) {
+            return
+        }
+        block.push('# @lc main=start',)
+        block.push("if __name__ == '__main__':",)
+
+        var funcLine: string = ''
+        code.forEach(element => {
+            if (element.match(/def/)) {
+                funcLine = element
+            }
+        });
+        // 获得函数名
+        var matchResult = funcLine.match(/def ?(.*?)\(/)
+        var funcName = ''
+        if (matchResult != null && matchResult.length >= 2) {
+            funcName = matchResult[1]
+        }
+        // 获得参数
+        var matchResult = funcLine.match(/\((.*?)\)/)
+        var paraString = ''
+        if (matchResult != null && matchResult.length >= 2) {
+            paraString = matchResult[1]
+        }
+
+        var paraItems: string[] = paraString.split(',')
+        var paraItemPairs = paraItems.map(element => {
+            return element.split(':').map(
+                element => {
+                    return element.trim()
+                }
+            )
+        }).slice(1);
+
+        // 获得例子的行
+        var exampleLines: string[][] = []
+        var index = -1
+        app.forEach(element => {
+            element = element.slice(1).trim()
+            if (element.match(/Example [0-9]*:/)) {
+                exampleLines.push([])
+                index = exampleLines.length - 1
+            }
+            else if (element.match(/Constraints:/)) {
+                index = -1
+            }
+            else if (index != -1) {
+                exampleLines[index].push(element)
+            }
+        });
+        // 获得例子
+        var examples: string[][] = []
+        exampleLines.forEach(exampleLine => {
+            examples.push(["", ""])
+            index = -1
+            exampleLine.forEach(l => {
+                if (l.slice(0, 'Input:'.length) == 'Input:') {
+                    index = 0
+                    examples[examples.length - 1][index] += l.slice('Input:'.length).trim()
+                }
+                else if (l.slice(0, 'Output:'.length) == 'Output:') {
+                    index = 1
+                    examples[examples.length - 1][index] += l.slice('Output:'.length).trim()
+                }
+
+                else if (l.slice(0, 'Output:'.length) == 'Output:') {
+                    index = 1
+                    examples[examples.length - 1][index] += l.slice('Output:'.length).trim()
+                }
+                else if (l.slice(0, 'Explanation:'.length) == 'Explanation:' || l.slice(0, 'Note:'.length) == 'Note:') {
+                    index = -1
+                }
+                else if (index != -1) {
+                    examples[examples.length - 1][index] += l
+
+                }
+
+            });
+
+        });
+
+        // 生成调用
+        var regString = ''
+        paraItemPairs.forEach(paraItemPair => {
+            regString += paraItemPair[0] + ' *=(.*?)'
+        });
+        regString += '$'
+        var reg = RegExp(regString)
+        examples.forEach((example, exampleIndex) => {
+            var matchResult = example[0].match(reg)
+
+            var para = paraItemPairs.map((paraItemPair, index) => {
+                if (matchResult == null) {
+                    return ''
+                }
+
+                if (paraItemPair[1] == 'ListNode') {
+                    return "listToListNode(" + matchResult[index + 1].trim() + ")"
+                }
+                else {
+                    return matchResult[index + 1]
+                }
+
+
+            }).join(' ');
+            block.push("    print('Example " + (exampleIndex + 1) + ":')",)
+            block.push("    print(Solution()." + funcName + "(" + para + "))",)
+            block.push("    print('Exception :')",)
+            block.push("    print('" + example[1] + "')",)
+            block.push("    print('')",)
+        });
+
+
+
+        block.push('    pass',)
+        block.push('# @lc main=end',)
+    }
+    private codeTemplateSplit(codeTemplate: string,): string[][] {
+        var blocks: string[][] = [[], [], [], [], [], [], [], []]
+        var strs = codeTemplate.split('\r\n');
+        var index = -1;
+        strs.forEach(
+            (str) => {
+                if (str.match(/@lc/)) {
+                    if (str.match(/end/)) {
+                        blocks[index].push(str);
+                        index = -1
+                    }
+                    else {
+                        if (str.match(/app/)) {
+                            index = 0
+                        }
+                        else if (str.match(/tags/)) {
+                            index = 1
+                        }
+                        else if (str.match(/imports/)) {
+                            index = 2
+                        }
+                        else if (str.match(/idea/)) {
+                            index = 3
+                        }
+                        else if (str.match(/group/)) {
+                            index = 4
+                        }
+                        else if (str.match(/rank/)) {
+                            index = 5
+                        }
+                        else if (str.match(/code/)) {
+                            index = 6
+                        }
+                        else if (str.match(/main/)) {
+                            index = 7
+                        }
+
+                    }
+                }
+                if (index != -1) {
+                    blocks[index].push(str);
+                }
+
+            }
+        )
+        return blocks
+    }
     public async showSolution(input: string, language: string): Promise<string> {
         const solution: string = await this.executeCommandWithProgressEx("Fetching top voted solution from discussions...", this.nodeExecutable, [await this.getLeetCodeBinaryPath(), "show", input, "--solution", "-l", language]);
         return solution;
     }
 
-    // FuTodo 获得表述执行位置
+    // FuTodo 获得描述执行位置
     public async getDescription(problemNodeId: string): Promise<string> {
         return await this.executeCommandWithProgressEx("Fetching problem description...", this.nodeExecutable, [await this.getLeetCodeBinaryPath(), "show", problemNodeId, "-x"]);
     }
