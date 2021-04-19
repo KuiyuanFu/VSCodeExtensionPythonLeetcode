@@ -154,14 +154,13 @@ class LeetCodeExecutor implements Disposable {
             (l) => {
                 return l.join("\r\n")
             }
-        ).join("\r\n");
+        ).join("\r\n\r\n");
     }
     private generateTags(block: string[], problemNode: IProblem,) {
         if (block.length != 0) {
             return
         }
         block.push('# @lc tags=' + problemNode.tags.join(';'),)
-        block.push('',)
     }
     private generateImports(block: string[],) {
         if (block.length != 0) {
@@ -177,7 +176,6 @@ class LeetCodeExecutor implements Disposable {
                 block.push(s)
             }
         )
-        block.push('',)
     }
     private generateIdea(block: string[],) {
         if (block.length != 0) {
@@ -195,7 +193,6 @@ class LeetCodeExecutor implements Disposable {
                 block.push(s)
             }
         )
-        block.push('',)
     }
     private generateGroup(block: string[],) {
         if (block.length != 0) {
@@ -203,30 +200,37 @@ class LeetCodeExecutor implements Disposable {
         }
 
         block.push('# @lc group=')
-        block.push('',)
     }
     private generateRank(block: string[],) {
         if (block.length != 0) {
             return
         }
         block.push('# @lc rank=')
-        block.push('',)
 
     }
 
     private generateCode(block: string[],) {
         var flag = false
-        block.forEach((s) => {
-            if (s.match(/        pass/)) {
-                flag = true;
+
+        for (var element of block) {
+            if (element.match(/^#/)) {
+                continue
             }
-        })
+            if (flag) {
+                if (element.trim() != '') {
+                    flag = false
+                }
+            }
+            if (element.match(/def/)) {
+                flag = true;
+                break
+            }
+        }
         if (flag == false) {
             var tail = block.pop()
             block.push('        pass')
             block.push(tail as string)
         }
-        block.push('',)
     }
     private generateMain(block: string[], app: string[], code: string[]) {
         if (block.length != 0) {
@@ -236,22 +240,26 @@ class LeetCodeExecutor implements Disposable {
         block.push("if __name__ == '__main__':",)
 
         var funcLine: string = ''
-        code.forEach(element => {
+        for (var element of code) {
+            if (element.match(/^#/)) {
+                continue
+            }
             if (element.match(/def/)) {
                 funcLine = element
+                break
             }
-        });
+        }
         // 获得函数名
         var matchResult = funcLine.match(/def ?(.*?)\(/)
         var funcName = ''
         if (matchResult != null && matchResult.length >= 2) {
-            funcName = matchResult[1]
+            funcName = matchResult[1].trim()
         }
         // 获得参数
         var matchResult = funcLine.match(/\((.*?)\)/)
         var paraString = ''
         if (matchResult != null && matchResult.length >= 2) {
-            paraString = matchResult[1]
+            paraString = matchResult[1].trim()
         }
 
         var paraItems: string[] = paraString.split(',')
@@ -321,19 +329,24 @@ class LeetCodeExecutor implements Disposable {
             var matchResult = example[0].match(reg)
 
             var para = paraItemPairs.map((paraItemPair, index) => {
+
                 if (matchResult == null) {
-                    return ''
+                    return 'error'
+                }
+                var p = matchResult[index + 1].trim()
+                if (p[p.length - 1] == ',') {
+                    p = p.slice(0, p.length - 1)
                 }
 
                 if (paraItemPair[1] == 'ListNode') {
-                    return "listToListNode(" + matchResult[index + 1].trim() + ")"
+                    return "listToListNode(" + p + ")"
                 }
                 else {
-                    return matchResult[index + 1]
+                    return p
                 }
 
 
-            }).join(' ');
+            }).join(',');
             block.push("    print('Example " + (exampleIndex + 1) + ":')",)
             block.push("    print('Input : ')",)
             block.push("    print('" + example[0] + "')",)
@@ -349,7 +362,6 @@ class LeetCodeExecutor implements Disposable {
 
         block.push('    pass',)
         block.push('# @lc main=end',)
-        block.push('',)
     }
     private codeTemplateSplit(codeTemplate: string,): string[][] {
         var blocks: string[][] = [[], [], [], [], [], [], [], []]

@@ -107,6 +107,7 @@ class ExplorerNodeManager implements Disposable {
 
         return this.explorerNodeMap.get(id);
     }
+    // FuTodo getNodeByIdRefresh修改为刷新Cache
     public async getNodeByIdRefresh(id: string): Promise<LeetCodeNode | undefined> {
         if (this.explorerNodeMap.size == 0) {
             await this.refreshCache()
