@@ -76,11 +76,21 @@ code ./helloworld
 
 
 
-## 
+## 发布
 
 
 
+https://code.visualstudio.com/api/working-with-extensions/publishing-extension
 
+```shell
+# 安装
+npm install -g vsce
+# 打包
+vsce package
+# 发布
+vsce publish
+
+```
 
 ````shell
 

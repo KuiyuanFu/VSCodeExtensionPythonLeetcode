@@ -226,7 +226,7 @@ class LeetCodeExecutor implements Disposable {
                 break
             }
         }
-        if (flag == false) {
+        if (flag == true) {
             var tail = block.pop()
             block.push('        pass')
             block.push(tail as string)
@@ -340,6 +340,10 @@ class LeetCodeExecutor implements Disposable {
 
                 if (paraItemPair[1] == 'ListNode') {
                     return "listToListNode(" + p + ")"
+                }
+                else if (paraItemPair[1] == 'TreeNode') {
+                    p = p.replace('null', 'None')
+                    return "listToTreeNode(" + p + ")"
                 }
                 else {
                     return p

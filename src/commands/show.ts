@@ -231,9 +231,9 @@ async function diyExistFilesInternal(): Promise<void> {
 }
 
 async function showDescriptionView(node: IProblem): Promise<void> {
-    if (false) {
-        return previewProblem(node, false, vscode.workspace.getConfiguration("leetcode").get<boolean>("enableSideMode", true));
-    }
+
+    return previewProblem(node, false, vscode.workspace.getConfiguration("leetcode").get<boolean>("enableSideMode", true));
+
 
 }
 
