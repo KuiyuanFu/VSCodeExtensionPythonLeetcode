@@ -21,6 +21,7 @@ import { leetCodePreviewProvider } from "../webview/leetCodePreviewProvider";
 import { leetCodeSolutionProvider } from "../webview/leetCodeSolutionProvider";
 import * as list from "./list";
 
+import * as fse from "fs-extra";
 
 // FuTodo 获得预览调用位置
 export async function previewProblem(input: IProblem | vscode.Uri, showProblem: boolean = true, isSideMode: boolean = false): Promise<void> {
@@ -203,6 +204,48 @@ async function showProblemInternal(node: IProblem): Promise<void> {
     } catch (error) {
         await promptForOpenOutputChannel(`${error} Please open the output channel for details.`, DialogType.error);
     }
+}
+// FuTodo 更新imports.py
+export async function updateImports(context: vscode.ExtensionContext): Promise<boolean> {
+    const language: string | undefined = await fetchProblemLanguage();
+    if (!language) {
+        return false;
+    }
+
+    const leetCodeConfig: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration("leetcode");
+    const workspaceFolder: string = await selectWorkspaceFolder();
+    if (!workspaceFolder) {
+        return false;
+    }
+
+    const fileFolder: string = leetCodeConfig
+        .get<string>(`filePath.${language}.folder`, leetCodeConfig.get<string>(`filePath.default.folder`, ""))
+        .trim();
+
+
+    var tempPath: string = context.asAbsolutePath(path.join("resources", "imports.py"));
+    var tfc = fse.readFileSync(tempPath).toString()
+
+    let fliePath: string = path.join(workspaceFolder, fileFolder, 'imports.py');
+    var flag = false
+    if (fse.existsSync(fliePath)) {
+        var ffc = fse.readFileSync(fliePath).toString()
+
+        if (tfc != ffc) {
+            flag = true
+
+        }
+    }
+    else {
+        flag = true
+    }
+    if (flag) {
+        fse.writeFileSync(fliePath, tfc)
+    }
+
+
+
+    return true;
 }
 // FuTodo 修改已有文件
 async function diyExistFilesInternal(): Promise<void> {

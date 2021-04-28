@@ -69,6 +69,8 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
 
         await leetCodeExecutor.switchEndpoint(plugin.getLeetCodeEndpoint());
         await leetCodeManager.getLoginStatus();
+        await show.updateImports(context);
+
     } catch (error) {
         leetCodeChannel.appendLine(error.toString());
         promptForOpenOutputChannel("Extension initialization failed. Please open output channel for details.", DialogType.error);
@@ -78,3 +80,5 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
 export function deactivate(): void {
     // Do nothing.
 }
+
+
