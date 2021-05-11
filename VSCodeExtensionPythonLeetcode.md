@@ -11,8 +11,7 @@
 ### 安装
 
 ````shell
-npm install -g yo generator-code
-npm install -g typescript
+npm install -g yo generator-code typescript  vsce
 npm install
 ````
 
