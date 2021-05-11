@@ -87,6 +87,10 @@ https://code.visualstudio.com/api/working-with-extensions/publishing-extension
 npm install -g vsce
 # 打包
 vsce package
+
+# 需要按照链接中教程，创建token，一定要选定All accessible organizations，之后登录
+vsce login <publisher name>
+
 # 发布
 vsce publish
 
