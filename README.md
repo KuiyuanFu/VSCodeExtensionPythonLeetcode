@@ -2,6 +2,10 @@
 
 修改扩展，以满足个人需要，主要是修改使用python 语言时，添加一些自动的测试用例。
 
+必须使用美国网站，之后在 `Leetcode: Show Description `中选择 `Both`。
+工作目录必须是`.leetcode` 目录，这样 `import` 才能正常工作。
+
+
 以下是原项目说明。
 
 

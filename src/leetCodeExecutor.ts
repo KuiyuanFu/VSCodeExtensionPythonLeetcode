@@ -168,7 +168,7 @@ class LeetCodeExecutor implements Disposable {
         }
         var t = [
             '# @lc imports=start',
-            'from .imports import *',
+            'from imports import *',
             '# @lc imports=end',
         ]
         t.forEach(

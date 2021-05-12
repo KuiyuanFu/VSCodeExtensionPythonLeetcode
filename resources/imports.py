@@ -1,5 +1,10 @@
 from typing import *
 from collections import *
+import sys
+import os
+
+rootPath = os.path.dirname(sys.path[0])
+os.chdir(rootPath)
 
 
 class ListNode:
