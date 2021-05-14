@@ -342,7 +342,7 @@ class LeetCodeExecutor implements Disposable {
                     return "listToListNode(" + p + ")"
                 }
                 else if (paraItemPair[1] == 'TreeNode') {
-                    p = p.replace('null', 'None')
+                    p = p.replace(/null/g, 'None')
                     return "listToTreeNode(" + p + ")"
                 }
                 else {
