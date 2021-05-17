@@ -96,13 +96,14 @@ class LeetCodeExecutor implements Disposable {
     }
     // FuTodo 文件内容函数
     public async showProblem(problemNode: IProblem, language: string, filePath: string, showDescriptionInComment: boolean = false): Promise<void> {
-        showDescriptionInComment = true;
+        // showDescriptionInComment = true;
         const templateType: string = showDescriptionInComment ? "-cx" : "-c";
 
 
         if (!await fse.pathExists(filePath)) {
             await fse.createFile(filePath);
             const codeTemplate: string = await this.executeCommandWithProgressEx("Fetching problem data...", this.nodeExecutable, [await this.getLeetCodeBinaryPath(), "show", problemNode.id, templateType, "-l", language]);
+
             // FuTodo diy模板的函数
             const codeTemplateR: string = await this.diyTemplate(problemNode, language, codeTemplate);
             await fse.writeFile(filePath, codeTemplateR);
@@ -139,8 +140,15 @@ class LeetCodeExecutor implements Disposable {
         if (language != 'python3' || problemNode == null) {
             return codeTemplate;
         }
+
+        const codeTemplateDescription: string = await this.executeCommandWithProgressEx("Fetching problem data...", this.nodeExecutable, [await this.getLeetCodeBinaryPath(), "show", problemNode.id, "-cx", "-l", language]);
+
+        var blocksDescription = this.codeTemplateSplit(codeTemplateDescription)
         var blocks = this.codeTemplateSplit(codeTemplate)
+
+
         var [app, tags, imports, idea, group, rank, code, main,] = blocks
+        app = blocksDescription[0]
 
         this.generateTags(tags, problemNode)
         this.generateImports(imports)
