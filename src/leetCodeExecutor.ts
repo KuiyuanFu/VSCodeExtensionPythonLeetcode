@@ -362,10 +362,10 @@ class LeetCodeExecutor implements Disposable {
             block.push("    print('Example " + (exampleIndex + 1) + ":')",)
             block.push("    print('Input : ')",)
             block.push("    print('" + example[0] + "')",)
-            block.push("    print('Output :')",)
-            block.push("    print(str(Solution()." + funcName + "(" + para + ")))",)
             block.push("    print('Exception :')",)
             block.push("    print('" + example[1] + "')",)
+            block.push("    print('Output :')",)
+            block.push("    print(str(Solution()." + funcName + "(" + para + ")))",)
             block.push("    print()",)
             block.push("    ",)
         });
