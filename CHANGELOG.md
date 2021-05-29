@@ -7,5 +7,3 @@ All notable changes to the "leetcode" extension will be documented in this file.
 更新了 imports.py
 # "version": "1.0.7",
 调整了输出期望结果和实际结果的顺序。
-# 1.0.8
-更新了 imports.py
