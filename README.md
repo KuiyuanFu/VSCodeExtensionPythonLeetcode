@@ -5,6 +5,7 @@
 必须使用美国网站，之后在 `Leetcode: Show Description `中选择 `Both`。
 工作目录必须是`.leetcode` 目录，这样 `import` 才能正常工作。
 
+如果需求可以联系我 [fukuiyuan@outlook.com](fukuiyuan@outlook.com)
 
 以下是原项目说明。
 

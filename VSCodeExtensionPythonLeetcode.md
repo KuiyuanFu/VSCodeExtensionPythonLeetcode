@@ -69,7 +69,7 @@ code ./helloworld
 
 `src\extension.ts` 下的两个函数。
 
-`activate` 激活时调用。 
+`activate` 激活时调用。
 
 `deactivate` 退出时调用。
 
@@ -80,6 +80,7 @@ code ./helloworld
 
 
 https://code.visualstudio.com/api/working-with-extensions/publishing-extension
+https://dev.azure.com/fukuiyuan/
 
 ```shell
 # 安装
@@ -99,7 +100,7 @@ vsce publish
 
 ````
 
-## 
+##
 
 
 
@@ -111,7 +112,7 @@ vsce publish
 
 
 
-## 
+##
 
 
 
