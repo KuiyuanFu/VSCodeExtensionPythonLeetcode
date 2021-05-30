@@ -9,3 +9,5 @@ All notable changes to the "leetcode" extension will be documented in this file.
 调整了输出期望结果和实际结果的顺序。
 # 1.0.8
 更新了 imports.py
+# 1.0.9
+更新了 imports.py 修改二叉树元素为0时，不生成结点的问题。

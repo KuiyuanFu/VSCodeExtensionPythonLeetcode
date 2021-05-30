@@ -89,7 +89,7 @@ def listToTreeNode(l: List[int]) -> TreeNode:
     for n in range(1, len(l)):
 
         n = l[n]
-        if n:
+        if n != None:
             n = TreeNode(val=n)
             q.put(n)
         if flag:
