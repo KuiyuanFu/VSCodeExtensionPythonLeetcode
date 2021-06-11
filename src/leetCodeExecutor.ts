@@ -90,8 +90,8 @@ class LeetCodeExecutor implements Disposable {
 
     public async listProblems(showLocked: boolean): Promise<string> {
         return await this.executeCommandEx(this.nodeExecutable, showLocked ?
-            [await this.getLeetCodeBinaryPath(), "list"] :
-            [await this.getLeetCodeBinaryPath(), "list", "-q", "L"],
+            [await this.getLeetCodeBinaryPath(), "list" ,'-t','algorithms'] :
+            [await this.getLeetCodeBinaryPath(), "list",'-t','algorithms', "-q", "L"],
         );
     }
     // FuTodo 文件内容函数

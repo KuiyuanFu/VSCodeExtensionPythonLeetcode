@@ -36,10 +36,16 @@ class ExplorerNodeManager implements Disposable {
                 id: Category.All,
                 name: Category.All,
             }), false),
+            //     // FuCategory
+            // new LeetCodeNode(Object.assign({}, defaultProblem, {
+            //     id: Category.Category,
+            //     name: Category.Category,
+            // }), false),
             new LeetCodeNode(Object.assign({}, defaultProblem, {
                 id: Category.Difficulty,
                 name: Category.Difficulty,
             }), false),
+
             new LeetCodeNode(Object.assign({}, defaultProblem, {
                 id: Category.Tag,
                 name: Category.Tag,
@@ -58,7 +64,30 @@ class ExplorerNodeManager implements Disposable {
     public getAllNodes(): LeetCodeNode[] {
         return Array.from(this.explorerNodeMap.values());
     }
-
+    // // FuCategory
+    // public getAllCategoryNodes(): LeetCodeNode[] {
+    //     const res: LeetCodeNode[] = [];
+    //     res.push(
+    //         new LeetCodeNode(Object.assign({}, defaultProblem, {
+    //             id: `${Category.Category}.Algorithms`,
+    //             name: "Algorithms",
+    //         }), false),
+    //         new LeetCodeNode(Object.assign({}, defaultProblem, {
+    //             id: `${Category.Category}.Others`,
+    //             name: "Others",
+    //         }), false),
+    //         // new LeetCodeNode(Object.assign({}, defaultProblem, {
+    //         //     id: `${Category.Category}.Medium`,
+    //         //     name: "Medium",
+    //         // }), false),
+    //         // new LeetCodeNode(Object.assign({}, defaultProblem, {
+    //         //     id: `${Category.Category}.Hard`,
+    //         //     name: "Hard",
+    //         // }), false),
+    //     );
+    //     this.sortSubCategoryNodes(res, Category.Category);
+    //     return res;
+    // }
     public getAllDifficultyNodes(): LeetCodeNode[] {
         const res: LeetCodeNode[] = [];
         res.push(
@@ -161,6 +190,22 @@ class ExplorerNodeManager implements Disposable {
 
     private sortSubCategoryNodes(subCategoryNodes: LeetCodeNode[], category: Category): void {
         switch (category) {
+            //     // FuCategory
+            // case Category.Category:
+            //     subCategoryNodes.sort((a: LeetCodeNode, b: LeetCodeNode): number => {
+            //         function getValue(input: LeetCodeNode): number {
+            //             switch (input.name.toLowerCase()) {
+            //                 case "algorithms":
+            //                     return 1;
+            //                 case "others":
+            //                     return 2;
+            //                 default:
+            //                     return Number.MAX_SAFE_INTEGER;
+            //             }
+            //         }
+            //         return getValue(a) - getValue(b);
+            //     });
+            //     break;
             case Category.Difficulty:
                 subCategoryNodes.sort((a: LeetCodeNode, b: LeetCodeNode): number => {
                     function getValue(input: LeetCodeNode): number {
