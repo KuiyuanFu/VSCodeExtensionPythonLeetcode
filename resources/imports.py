@@ -2,6 +2,7 @@ from typing import *
 from collections import *
 import sys
 import os
+from itertools import *
 
 rootPath = os.path.dirname(sys.path[0])
 os.chdir(rootPath)

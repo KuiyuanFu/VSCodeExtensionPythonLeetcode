@@ -13,3 +13,5 @@ All notable changes to the "leetcode" extension will be documented in this file.
 更新了 imports.py 修改二叉树元素为0时，不生成结点的问题。
 # 1.0.10
 更新了过滤题目，只显示算法题，而数据库，shell什么的都不显示了。
+# 1.0.11
+更新了 imports.py itertools
