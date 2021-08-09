@@ -2,7 +2,7 @@
     "name": "python-leetcode",
     "displayName": "PythonLeetcode",
     "description": "Solve LeetCode problems in VS Code",
-    "version": "1.0.13",
+    "version": "1.0.14",
     "author": "KuiyuanFu",
     "publisher": "KuiyuanFu",
     "license": "MIT",

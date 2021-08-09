@@ -6,6 +6,7 @@ from itertools import *
 from math import *
 from heapq import *
 from bisect import *
+from random import *
 
 rootPath = os.path.dirname(sys.path[0])
 os.chdir(rootPath)
