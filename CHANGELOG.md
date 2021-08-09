@@ -15,3 +15,7 @@ All notable changes to the "leetcode" extension will be documented in this file.
 更新了过滤题目，只显示算法题，而数据库，shell什么的都不显示了。
 # 1.0.11
 更新了 imports.py itertools
+# 1.0.12
+更新了 imports.py math heapq
+# 1.0.13
+更新了 imports.py math bisect
