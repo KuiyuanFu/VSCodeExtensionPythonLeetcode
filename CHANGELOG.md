@@ -21,3 +21,5 @@ All notable changes to the "leetcode" extension will be documented in this file.
 更新了 imports.py math bisect
 # 1.0.14
 更新了 imports.py random
+# 1.0.15
+更新了 imports.py random fix
