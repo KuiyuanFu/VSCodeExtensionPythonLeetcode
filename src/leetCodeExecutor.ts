@@ -346,10 +346,10 @@ class LeetCodeExecutor implements Disposable {
                     p = p.slice(0, p.length - 1)
                 }
 
-                if (paraItemPair[1] == 'ListNode') {
+                if (paraItemPair[1] == 'ListNode'|| paraItemPair[1] == 'Optional[ListNode]') {
                     return "listToListNode(" + p + ")"
                 }
-                else if (paraItemPair[1] == 'TreeNode') {
+                else if (paraItemPair[1] == 'TreeNode' || paraItemPair[1] == 'Optional[TreeNode]') {
                     p = p.replace(/null/g, 'None')
                     return "listToTreeNode(" + p + ")"
                 }

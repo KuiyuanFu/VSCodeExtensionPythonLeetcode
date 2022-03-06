@@ -23,3 +23,5 @@ All notable changes to the "leetcode" extension will be documented in this file.
 更新了 imports.py random
 # 1.0.15
 更新了 imports.py random fix
+# 1.0.16
+更新了 Optional[TreeNode]
