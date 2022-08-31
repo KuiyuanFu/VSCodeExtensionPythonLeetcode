@@ -23,7 +23,7 @@ export class LeetCodeTreeDataProvider implements vscode.TreeDataProvider<LeetCod
 
     public async refresh(): Promise<void> {
         await explorerNodeManager.refreshCache();
-        this.onDidChangeTreeDataEvent.fire();
+        this.onDidChangeTreeDataEvent.fire(null);
     }
 
     public getTreeItem(element: LeetCodeNode): vscode.TreeItem | Thenable<vscode.TreeItem> {
@@ -51,6 +51,7 @@ export class LeetCodeTreeDataProvider implements vscode.TreeDataProvider<LeetCod
             collapsibleState: element.isProblem ? vscode.TreeItemCollapsibleState.None : vscode.TreeItemCollapsibleState.Collapsed,
             iconPath: this.parseIconPathFromProblemState(element),
             command: element.isProblem ? element.previewCommand : undefined,
+            resourceUri: element.uri,
             contextValue,
         };
     }

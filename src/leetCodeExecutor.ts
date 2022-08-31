@@ -88,21 +88,32 @@ class LeetCodeExecutor implements Disposable {
         return await this.executeCommandEx(this.nodeExecutable, [await this.getLeetCodeBinaryPath(), "user", "-L"]);
     }
 
-    public async listProblems(showLocked: boolean): Promise<string> {
-        return await this.executeCommandEx(this.nodeExecutable, showLocked ?
-            [await this.getLeetCodeBinaryPath(), "list" ,'-t','algorithms'] :
-            [await this.getLeetCodeBinaryPath(), "list",'-t','algorithms', "-q", "L"],
-        );
+    public async listProblems(showLocked: boolean, needTranslation: boolean): Promise<string> {
+        const cmd: string[] = [await this.getLeetCodeBinaryPath(), "list"];
+        if (!needTranslation) {
+            cmd.push("-T"); // use -T to prevent translation
+        }
+        if (!showLocked) {
+            cmd.push("-q");
+            cmd.push("L");
+        }
+        return await this.executeCommandEx(this.nodeExecutable, cmd);
     }
     // FuTodo 文件内容函数
-    public async showProblem(problemNode: IProblem, language: string, filePath: string, showDescriptionInComment: boolean = false): Promise<void> {
+
+    public async showProblem(problemNode: IProblem, language: string, filePath: string, showDescriptionInComment: boolean = false, needTranslation: boolean): Promise<void> {
         // showDescriptionInComment = true;
         const templateType: string = showDescriptionInComment ? "-cx" : "-c";
+        const cmd: string[] = [await this.getLeetCodeBinaryPath(), "show", problemNode.id, templateType, "-l", language];
+
+        if (!needTranslation) {
+            cmd.push("-T"); // use -T to force English version
+        }
 
 
         if (!await fse.pathExists(filePath)) {
             await fse.createFile(filePath);
-            const codeTemplate: string = await this.executeCommandWithProgressEx("Fetching problem data...", this.nodeExecutable, [await this.getLeetCodeBinaryPath(), "show", problemNode.id, templateType, "-l", language]);
+            const codeTemplate: string = await this.executeCommandWithProgressEx("Fetching problem data...", this.nodeExecutable, cmd);
 
             // FuTodo diy模板的函数
             const codeTemplateR: string = await this.diyTemplate(problemNode, language, codeTemplate);
@@ -346,7 +357,7 @@ class LeetCodeExecutor implements Disposable {
                     p = p.slice(0, p.length - 1)
                 }
 
-                if (paraItemPair[1] == 'ListNode'|| paraItemPair[1] == 'Optional[ListNode]') {
+                if (paraItemPair[1] == 'ListNode' || paraItemPair[1] == 'Optional[ListNode]') {
                     return "listToListNode(" + p + ")"
                 }
                 else if (paraItemPair[1] == 'TreeNode' || paraItemPair[1] == 'Optional[TreeNode]') {
@@ -422,14 +433,22 @@ class LeetCodeExecutor implements Disposable {
         )
         return blocks
     }
-    public async showSolution(input: string, language: string): Promise<string> {
-        const solution: string = await this.executeCommandWithProgressEx("Fetching top voted solution from discussions...", this.nodeExecutable, [await this.getLeetCodeBinaryPath(), "show", input, "--solution", "-l", language]);
+    public async showSolution(input: string, language: string, needTranslation: boolean): Promise<string> {
+        // solution don't support translation
+        const cmd: string[] = [await this.getLeetCodeBinaryPath(), "show", input, "--solution", "-l", language];
+        if (!needTranslation) {
+            cmd.push("-T");
+        }
+        const solution: string = await this.executeCommandWithProgressEx("Fetching top voted solution from discussions...", this.nodeExecutable, cmd);
         return solution;
     }
 
-    // FuTodo 获得描述执行位置
-    public async getDescription(problemNodeId: string): Promise<string> {
-        return await this.executeCommandWithProgressEx("Fetching problem description...", this.nodeExecutable, [await this.getLeetCodeBinaryPath(), "show", problemNodeId, "-x"]);
+    public async getDescription(problemNodeId: string, needTranslation: boolean): Promise<string> {
+        const cmd: string[] = [await this.getLeetCodeBinaryPath(), "show", problemNodeId, "-x"];
+        if (!needTranslation) {
+            cmd.push("-T");
+        }
+        return await this.executeCommandWithProgressEx("Fetching problem description...", this.nodeExecutable, cmd);
     }
 
     public async listSessions(): Promise<string> {

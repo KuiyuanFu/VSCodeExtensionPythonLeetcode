@@ -118,3 +118,11 @@ export enum DescriptionConfiguration {
 }
 
 export const leetcodeHasInited: string = "leetcode.hasInited";
+
+export enum SortingStrategy {
+    None = "None",
+    AcceptanceRateAsc = "Acceptance Rate (Ascending)",
+    AcceptanceRateDesc = "Acceptance Rate (Descending)",
+    FrequencyAsc = "Frequency (Ascending)",
+    FrequencyDesc = "Frequency (Descending)",
+}

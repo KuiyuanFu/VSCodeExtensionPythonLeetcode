@@ -6,8 +6,8 @@
   <img src="https://raw.githubusercontent.com/LeetCode-OpenSource/vscode-leetcode/master/resources/LeetCode.png" alt="">
 </p>
 <p align="center">
-  <a href="https://travis-ci.org/LeetCode-OpenSource/vscode-leetcode">
-    <img src="https://img.shields.io/travis/LeetCode-OpenSource/vscode-leetcode.svg?style=flat-square" alt="">
+  <a href="https://github.com/LeetCode-OpenSource/vscode-leetcode/actions?query=workflow%3ACI+branch%3Amaster">
+    <img src="https://img.shields.io/github/workflow/status/LeetCode-OpenSource/vscode-leetcode/CI/master?style=flat-square" alt="">
   </a>
   <a href="https://gitter.im/vscode-leetcode/Lobby">
     <img src="https://img.shields.io/gitter/room/LeetCode-OpenSource/vscode-leetcode.svg?style=flat-square" alt="">
@@ -23,7 +23,7 @@
 - [English Document](https://github.com/LeetCode-OpenSource/vscode-leetcode#requirements) | 中文文档
 
 ## ❗️ 注意 ❗️- 无法登录 LeetCode 节点的临时解决办法
-> 注意：如果使用的是 `leetcode-cn.com` 账户，可以跳过此段落。
+> 注意：如果使用的是 `leetcode.cn` 账户，可以跳过此段落。
 
 近期我们发现插件出现了[无法登录 leetcode.com 节点的问题](https://github.com/LeetCode-OpenSource/vscode-leetcode/issues/478)。原因是因为近期 leetcode.com 改变了登录机制，目前我们暂时没有找到解决该问题的完美解决方案。
 
@@ -64,7 +64,7 @@
 
 - 目前可切换的版本有:
   - **leetcode.com**
-  - **leetcode-cn.com**
+  - **leetcode.cn**
 
   > 注意：两种版本的 LeetCode 账户并**不通用**，请确保当前激活的版本是正确的。插件默认激活的是**英文版**。
 
@@ -134,6 +134,7 @@
 | `leetcode.enableSideMode`                                                          | 指定在解决一道题时，是否将`问题预览`、`高票答案`与`提交结果`窗口集中在编辑器的第二栏。                                                                                                                                                                                                          | `true`             |
 | `leetcode.nodePath`                                                                | 指定 `Node.js` 可执行文件的路径。如：C:\Program Files\nodejs\node.exe                                                                                                                                                                                                                           | `node`             |
 | `leetcode.showCommentDescription`                                                  | 指定是否要在注释中显示题干。                                                                                                                                                                                                                                                                    | `false`            |
+| `leetcode.useEndpointTranslation`                                                       | 是否显示翻译版本内容。                                                                                                                                                                                                                                                                                                                                                                | `true`            |
 
 ## 需要帮助？
 在遇到任何问题时，可以先查看一下[疑难解答](https://github.com/LeetCode-OpenSource/vscode-leetcode/wiki/%E7%96%91%E9%9A%BE%E8%A7%A3%E7%AD%94)以及[常见问题](https://github.com/LeetCode-OpenSource/vscode-leetcode/wiki/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98)寻求帮助。
