@@ -6,6 +6,7 @@ from itertools import *
 from math import *
 from heapq import *
 from bisect import *
+from functools import *
 import random
 
 rootPath = os.path.dirname(sys.path[0])
@@ -13,6 +14,7 @@ os.chdir(rootPath)
 
 
 class ListNode:
+
     def __init__(self, val=0, next=None):
         self.val = val
         self.next = next
@@ -40,6 +42,7 @@ def listToListNode(l: List[int]) -> ListNode:
 
 
 class TreeNode:
+
     def __init__(self,
                  val: int = 0,
                  left: 'TreeNode' = None,

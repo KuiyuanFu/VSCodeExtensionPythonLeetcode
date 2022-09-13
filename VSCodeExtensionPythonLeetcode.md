@@ -89,7 +89,9 @@ npm install -g vsce
 vsce package
 
 # 需要按照链接中教程，创建token，一定要选定All accessible organizations，之后登录
+# 右键粘贴token
 vsce login <publisher name>
+vsce login KuiyuanFu
 
 # 发布
 vsce publish

@@ -89,7 +89,8 @@ class LeetCodeExecutor implements Disposable {
     }
 
     public async listProblems(showLocked: boolean, needTranslation: boolean): Promise<string> {
-        const cmd: string[] = [await this.getLeetCodeBinaryPath(), "list"];
+        await this.deleteCache();
+        const cmd: string[] = [await this.getLeetCodeBinaryPath(), "list", '-t', 'algorithms'];
         if (!needTranslation) {
             cmd.push("-T"); // use -T to prevent translation
         }

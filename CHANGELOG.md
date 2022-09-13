@@ -1,6 +1,13 @@
 # Change Log
 All notable changes to the "leetcode" extension will be documented in this file.
 
+# 1.0.19
+list problem 时 delete cache
+更新了 imports.py
+
+# 1.0.18
+更新了 imports.py
+
 # 1.0.17
 更新了 imports.py
 
